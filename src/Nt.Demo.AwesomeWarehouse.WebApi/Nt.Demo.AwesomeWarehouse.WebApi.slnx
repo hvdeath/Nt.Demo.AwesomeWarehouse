@@ -1,0 +1,6 @@
+<Solution>
+  <Project Path="Nt.Demo.AwesomeWarehouse.WebApi.ApiService/Nt.Demo.AwesomeWarehouse.WebApi.ApiService.csproj" />
+  <Project Path="Nt.Demo.AwesomeWarehouse.WebApi.AppHost/Nt.Demo.AwesomeWarehouse.WebApi.AppHost.csproj" />
+  <Project Path="Nt.Demo.AwesomeWarehouse.WebApi.ServiceDefaults/Nt.Demo.AwesomeWarehouse.WebApi.ServiceDefaults.csproj" />
+  <Project Path="Nt.Demo.AwesomeWarehouse.WebApi.Tests/Nt.Demo.AwesomeWarehouse.WebApi.Tests.csproj" />
+</Solution>
