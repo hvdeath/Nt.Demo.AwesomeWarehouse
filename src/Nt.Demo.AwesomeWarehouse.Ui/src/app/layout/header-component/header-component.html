@@ -1,0 +1,56 @@
+<nav class="navbar navbar-expand-md bg-light">
+  <div class="container-fluid">
+    <a class="navbar-brand" [routerLink]="['/']">
+      <i class="bi bi-bag px-2 bg-primary text-dark rounded"></i>
+        Awesome Warehouse
+    </a>
+    <button
+      class="navbar-toggler"
+      type="button"
+      data-bs-toggle="collapse"
+      data-bs-target="#navContent"
+      aria-controls="navContent"
+      aria-expanded="false"
+      aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navContent">
+      <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+        <li class="nav-item px-md-1">
+          <a
+            class="nav-link"
+            aria-current="page"
+            [routerLink]="['/']"
+            [routerLinkActive]="'bg-primary text-dark rounded'"
+            [routerLinkActiveOptions]="{ exact: true }"
+            (click)="navbarCollapse()">
+            <i class="bi bi-house-fill"></i>
+            Home
+          </a>
+        </li>
+        <li class="nav-item px-md-1">
+          <a
+            class="nav-link"
+            [routerLink]="['/products']"
+            [routerLinkActive]="'bg-primary text-dark rounded'"
+            [routerLinkActiveOptions]="{ exact: false }"
+            (click)="navbarCollapse()">
+            <i class="bi bi-card-checklist"></i>
+            Stocks
+          </a>
+        </li>
+        <li class="nav-item px-md-1">
+          <a
+            class="nav-link"
+            [routerLink]="['/reports']"
+            [routerLinkActive]="'bg-primary text-dark rounded'"
+            [routerLinkActiveOptions]="{ exact: false }"
+            (click)="navbarCollapse()">
+            <i class="bi bi-heart-half"></i>
+            Reports
+          </a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
