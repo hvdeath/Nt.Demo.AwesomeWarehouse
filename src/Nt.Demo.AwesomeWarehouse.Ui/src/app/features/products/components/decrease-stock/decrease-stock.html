@@ -1,0 +1,15 @@
+<h2 mat-dialog-title>Decrease quantity of {{data.name}}</h2>
+<mat-dialog-content>
+  <p>Current quantity: {{data.quantity}}</p>
+  <mat-form-field class="full-width">
+    <mat-label>Decrease by</mat-label>
+    <input matInput type="number" min="0" [max]="data.quantity" [(ngModel)]="increasedValue" #input="ngModel" />
+    @if(input.invalid){
+         <mat-error>Value can't decreased more than {{data.quantity}}</mat-error>
+    }
+  </mat-form-field>
+</mat-dialog-content>
+<mat-dialog-actions>
+  <button matButton (click)="onNoClick()">Cancel</button>
+  <button matButton [mat-dialog-close]="increasedValue()" [disabled]="input.invalid" cdkFocusInitial>Save</button>
+</mat-dialog-actions>
