@@ -1,0 +1,149 @@
+:host {
+  display: block;
+}
+
+.home-page {
+  padding: 18px 20px 24px;
+}
+
+.hero {
+  display: grid;
+  grid-template-columns: 1.4fr 0.9fr;
+  gap: 20px;
+  align-items: center;
+  padding: 8px 4px 20px;
+}
+
+.eyebrow {
+  margin: 0 0 8px;
+  color: var(--mat-sys-primary);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.hero-copy h1 {
+  margin: 0;
+  font-size: clamp(2rem, 5vw, 3.4rem);
+  letter-spacing: -0.05em;
+  line-height: 1.05;
+}
+
+.hero-text {
+  margin: 18px 0 0;
+  max-width: 620px;
+  font-size: 1.08rem;
+  line-height: 1.6;
+  color: var(--mat-sys-on-surface-variant);
+}
+
+.hero-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 24px;
+}
+
+.summary-card {
+  padding: 8px;
+}
+
+.summary-header,
+.summary-breakdown {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.summary-label {
+  color: var(--mat-sys-on-surface-variant);
+  font-size: 0.78rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.summary-pill {
+  display: inline-flex;
+  align-items: center;
+  padding: 6px 10px;
+  border-radius: 999px;
+  background: rgba(52, 168, 83, 0.12);
+  color: #0f7d3d;
+  font-size: 0.72rem;
+  font-weight: 700;
+}
+
+.summary-metric {
+  display: flex;
+  flex-direction: column;
+  padding: 22px 0;
+}
+
+.metric-value {
+  font-size: clamp(2.5rem, 6vw, 4rem);
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: -0.06em;
+}
+
+.metric-label {
+  margin-top: 8px;
+  color: var(--mat-sys-on-surface-variant);
+}
+
+.summary-breakdown {
+  gap: 10px;
+  padding-top: 12px;
+  border-top: 1px solid rgba(18, 26, 38, 0.08);
+}
+
+.summary-breakdown > div {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.stat-label {
+  color: var(--mat-sys-on-surface-variant);
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 18px;
+  margin-top: 8px;
+}
+
+.stats-grid mat-card {
+  padding: 20px 18px;
+}
+
+.stats-grid mat-icon {
+  font-size: 2rem;
+  width: 2rem;
+  height: 2rem;
+  margin-bottom: 12px;
+}
+
+.stats-grid h3 {
+  margin: 0 0 10px;
+  font-size: 1.1rem;
+}
+
+.stats-grid p {
+  margin: 0;
+  color: var(--mat-sys-on-surface-variant);
+  line-height: 1.6;
+}
+
+@media (max-width: 900px) {
+  .hero,
+  .stats-grid {
+    grid-template-columns: 1fr;
+  }
+}

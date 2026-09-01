@@ -1,14 +1,63 @@
-<div class="py-5 px-4 bg-light rounded-4">
-  <h1 class="mb-4">
-    <i class="bi bi-bag bg-primary text-dark rounded px-2"></i> Awesome Warehouse
-  </h1>
-  <p class="lead">    
-    <strong> Awesome Warehouse </strong>. Boost your productivity and
-    enjoy a streamlined development experience.
-  </p>
-  <hr />
-  <p>
-    Some meaningful text about the project. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
-  </p>
- 
-</div>
+<section class="home-page">
+  <div class="hero">
+    <div class="hero-copy">
+      <p class="eyebrow">Overview</p>
+      <h1>Smarter inventory management for every shift.</h1>
+      <p class="hero-text">
+        Track stock, maintain healthy replenishment cycles, and keep your warehouse team focused on action instead of paperwork.
+      </p>
+
+      <div class="hero-actions">
+        <button mat-flat-button color="primary" [routerLink]="['/products']">View inventory</button>
+        <button mat-stroked-button [routerLink]="['/reports']">Open reports</button>
+      </div>
+    </div>
+
+    <mat-card class="summary-card" appearance="outlined">
+      <div class="summary-header">
+        <span class="summary-label">Live snapshot</span>
+        <span class="summary-pill">+12.4%</span>
+      </div>
+
+      <div class="summary-metric">
+        <span class="metric-value">248</span>
+        <span class="metric-label">items stocked</span>
+      </div>
+
+      <div class="summary-breakdown">
+        <div>
+          <span class="stat-label">Low stock</span>
+          <strong>14</strong>
+        </div>
+        <div>
+          <span class="stat-label">On order</span>
+          <strong>36</strong>
+        </div>
+        <div>
+          <span class="stat-label">Fulfilled</span>
+          <strong>94%</strong>
+        </div>
+      </div>
+    </mat-card>
+  </div>
+
+  <div class="stats-grid">
+    <mat-card appearance="outlined">
+      <mat-icon color="primary">inventory_2</mat-icon>
+      <h3>Inventory health</h3>
+      <p>Monitor stock movement and quickly surface low-risk items before they become issues.</p>
+    </mat-card>
+
+    <mat-card appearance="outlined">
+      <mat-icon color="primary">trending_up</mat-icon>
+      <h3>Demand trends</h3>
+      <p>Review recent patterns to plan smarter purchasing and staffing decisions across the floor.</p>
+    </mat-card>
+
+    <mat-card appearance="outlined">
+      <mat-icon color="primary">check_circle</mat-icon>
+      <h3>Operational clarity</h3>
+      <p>Keep daily workflows streamlined with a clean, consistent dashboard designed for busy teams.</p>
+    </mat-card>
+  </div>
+</section>

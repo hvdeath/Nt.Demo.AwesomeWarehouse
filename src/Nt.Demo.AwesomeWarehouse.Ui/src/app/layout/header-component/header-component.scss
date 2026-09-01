@@ -1,0 +1,79 @@
+:host {
+  display: block;
+  position: sticky;
+  top: 0;
+  z-index: 20;
+}
+
+.app-toolbar {
+  background: rgba(255, 255, 255, 0.8);
+  backdrop-filter: blur(18px);
+  border-bottom: 1px solid rgba(18, 26, 38, 0.08);
+  min-height: 72px;
+  color: var(--mat-sys-on-surface);
+}
+
+.toolbar-inner {
+  width: min(1200px, calc(100% - 32px));
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+}
+
+.brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 1.1rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+}
+
+.brand-mark {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 12px;
+  background: linear-gradient(135deg, var(--mat-sys-primary) 0%, var(--mat-sys-primary-container) 100%);
+  color: var(--mat-sys-on-primary);
+  box-shadow: 0 8px 18px rgba(103, 80, 164, 0.28);
+}
+
+.brand-mark mat-icon {
+  font-size: 20px;
+  width: 20px;
+  height: 20px;
+}
+
+.spacer {
+  flex: 1 1 auto;
+}
+
+.nav-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.nav-actions a {
+  border-radius: 999px;
+  font-weight: 500;
+}
+
+.nav-actions a.active-link {
+  background: var(--mat-sys-primary-container);
+  color: var(--mat-sys-on-primary-container);
+}
+
+@media (max-width: 720px) {
+  .toolbar-inner {
+    width: min(100%, calc(100% - 20px));
+  }
+
+  .brand span:last-child {
+    display: none;
+  }
+}
+

@@ -1,9 +1,10 @@
-<app-header />
-
-<div class="container my-5">
+<div class="shell-root">
+  <app-header />
   <app-page-title />
 
-  <router-outlet></router-outlet>
+  <main class="main-content">
+    <div class="page-surface">
+      <router-outlet></router-outlet>
+    </div>
+  </main>
 </div>
-
-<app-footer />
