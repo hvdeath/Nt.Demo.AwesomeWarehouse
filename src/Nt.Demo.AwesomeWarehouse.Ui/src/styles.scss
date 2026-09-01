@@ -105,3 +105,11 @@ a {
 .full-width {
   width: 100%;
 }
+
+.spinner-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 240px;
+  padding: 2rem 1rem;
+}
