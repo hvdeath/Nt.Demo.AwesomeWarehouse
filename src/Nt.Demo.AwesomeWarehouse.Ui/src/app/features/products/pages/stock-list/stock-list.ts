@@ -49,7 +49,7 @@ export class StockListComponent implements OnInit {
   products$ = this.productService.getAllProducts();
 
   public dataSource: ProductsDataSource = new ProductsDataSource(this.productService);
-  columnsToDisplay = ['name', 'description', 'weight', 'unitPrice', 'quantity', 'actions'];
+  columnsToDisplay = ['name', 'description', 'weight', 'unitPrice', 'unitPriceInEuros', 'quantity', 'actions'];
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild('input') input!: ElementRef;

@@ -1,5 +1,6 @@
 ﻿using FastEndpoints;
 using Nt.Demo.AwesomeWarehouse.WebApi.ApiService.Contracts.Products;
+using Nt.Demo.AwesomeWarehouse.WebApi.ApiService.Features.Product.GetProducts;
 using Nt.Demo.AwesomeWarehouse.WebApi.ApiService.Features.Products.Shared.Entities;
 
 namespace Nt.Demo.AwesomeWarehouse.WebApi.ApiService.Features.Products.Shared.Mappers
@@ -71,6 +72,25 @@ namespace Nt.Demo.AwesomeWarehouse.WebApi.ApiService.Features.Products.Shared.Ma
                 Id = e.Id,
                 Name = e.Name,
                 UnitPrice = e.UnitPrice,
+                Description = e.Description,
+                Weight = e.Weight,
+                Created = e.Created,
+                Quantity = e.Quantity,
+                Version = Convert.ToBase64String(e.Version)
+            };
+        }
+    }
+
+    public class GetProductsMapper : ResponseMapper<GetProductResponse, GetProductDto>
+    {
+        public override GetProductResponse FromEntity(GetProductDto e)
+        {
+            return new GetProductResponse
+            {
+                Id = e.Id,
+                Name = e.Name,
+                UnitPrice = e.UnitPrice,
+                UnitPriceInEuros = e.UnitPriceInEuros,
                 Description = e.Description,
                 Weight = e.Weight,
                 Created = e.Created,

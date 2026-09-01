@@ -1,6 +1,7 @@
 using FastEndpoints;
 using FastEndpoints.Swagger;
 using Microsoft.EntityFrameworkCore;
+using Nt.Demo.AwesomeWarehouse.WebApi.ApiService.Features.Product.Shared.Services;
 using Nt.Demo.AwesomeWarehouse.WebApi.ApiService.Persistance;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -30,6 +31,16 @@ builder.Services.AddEndpointsApiExplorer();
 
 builder.Services.AddDbContext<WarehouseDbContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("sqldb")
         ?? throw new InvalidOperationException("Connection string 'database' not found.")));
+
+
+builder.Services.AddHttpClient<ICurrencyExchangeService, CurrencyExchangeService>(client =>
+{
+    client.BaseAddress = new Uri(builder.Configuration["ExchangeServiceBaseUrl"]);
+})
+// todo: make it resilient with Polly policies, e.g. retry and circuit breaker..
+//.AddPolicyHandler(GetRetryPolicy())
+//.AddPolicyHandler(GetCircuitBreakerPolicy())
+;
 
 var app = builder.Build();
 

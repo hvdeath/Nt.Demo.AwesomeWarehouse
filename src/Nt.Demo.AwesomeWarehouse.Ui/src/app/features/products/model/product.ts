@@ -3,6 +3,7 @@ export interface Product {
   name: string;
   description: string;
   unitPrice: number;
+  unitPriceInEuros: number;
   weight: number;
   quantity: number;
   created: Date;

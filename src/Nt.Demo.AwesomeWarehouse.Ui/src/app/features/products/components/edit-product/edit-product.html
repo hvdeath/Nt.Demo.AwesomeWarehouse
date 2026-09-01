@@ -1,54 +1,49 @@
-<div class="container-fluid">
-    <div class="row">
-        <div class="col-12">
-            <div>
-                <form class="form" [formGroup]="productForm" (ngSubmit)="onSubmit()">
-                    <h2>Create product</h2>
-                    <p>🚀</p>
+<section class="main-section">
+    <form class="form" [formGroup]="productForm" (ngSubmit)="onSubmit()">
+        <h2>Create product</h2>
+        <p>🚀</p>
 
-                    <mat-form-field class="full-width">
-                        <mat-label>Name</mat-label>
-                        <input matInput id="name" type="text" name="name" formControlName="name">
-                        @if (productForm.controls.name.invalid && productForm.controls.name.touched) {
-                         <mat-error>Name is required</mat-error>
-                        }
-                    </mat-form-field>
-                    <mat-form-field class="full-width">
-                        <mat-label>Description</mat-label>
-                        <textarea matInput id="description" name="description" formControlName="description" placeholder="Ex. It makes me feel..."></textarea>
-                    </mat-form-field>
-                    <mat-form-field class="full-width">
-                        <mat-label>Unit Price</mat-label>
-                        <input matInput id="unitPrice" type="number" name="unitPrice" formControlName="unitPrice">
-                        <mat-hint align="end">Greater than 0</mat-hint>
-                        @if (productForm.controls.unitPrice.invalid && productForm.controls.unitPrice.touched) {
-                         <mat-error>Unit Price is required and must be positive number</mat-error>
-                        }
-                    </mat-form-field>
-                    <mat-form-field class="full-width">
-                        <mat-label>Weight</mat-label>
-                        <input matInput id="weight" type="number" name="weight" formControlName="weight">
-                        <mat-hint align="end">Greater than 0</mat-hint>
-                        @if (productForm.controls.weight.invalid && productForm.controls.weight.touched) {
-                         <mat-error>Weight is required and must be positive number</mat-error>
-                        }
-                    </mat-form-field>
-                    <mat-form-field class="full-width">
-                        <mat-label>Quantity</mat-label>
-                        <input matInput id="quantity" type="number" name="quantity" formControlName="quantity">
-                        <mat-hint align="end">Greater than 0</mat-hint>
-                        @if (productForm.controls.quantity.invalid && productForm.controls.quantity.touched) {
-                         <mat-error>Quantity is required and must be positive number</mat-error>
-                        }
-                    </mat-form-field>
+        <mat-form-field class="full-width">
+            <mat-label>Name</mat-label>
+            <input matInput id="name" type="text" name="name" formControlName="name">
+            @if (productForm.controls.name.invalid && productForm.controls.name.touched) {
+            <mat-error>Name is required</mat-error>
+            }
+        </mat-form-field>
+        <mat-form-field class="full-width">
+            <mat-label>Description</mat-label>
+            <textarea matInput id="description" name="description" formControlName="description"
+                placeholder="Ex. It makes me feel..."></textarea>
+        </mat-form-field>
+        <mat-form-field class="full-width">
+            <mat-label>Unit Price</mat-label>
+            <input matInput id="unitPrice" type="number" name="unitPrice" formControlName="unitPrice">
+            <mat-hint align="end">Greater than 0</mat-hint>
+            @if (productForm.controls.unitPrice.invalid && productForm.controls.unitPrice.touched) {
+            <mat-error>Unit Price is required and must be positive number</mat-error>
+            }
+        </mat-form-field>
+        <mat-form-field class="full-width">
+            <mat-label>Weight</mat-label>
+            <input matInput id="weight" type="number" name="weight" formControlName="weight">
+            <mat-hint align="end">Greater than 0</mat-hint>
+            @if (productForm.controls.weight.invalid && productForm.controls.weight.touched) {
+            <mat-error>Weight is required and must be positive number</mat-error>
+            }
+        </mat-form-field>
+        <mat-form-field class="full-width">
+            <mat-label>Quantity</mat-label>
+            <input matInput id="quantity" type="number" name="quantity" formControlName="quantity">
+            <mat-hint align="end">Greater than 0</mat-hint>
+            @if (productForm.controls.quantity.invalid && productForm.controls.quantity.touched) {
+            <mat-error>Quantity is required and must be positive number</mat-error>
+            }
+        </mat-form-field>
 
-                    <p class="form-actions">
-                        <button matButton="outlined" type="button" (click)="goBack()">Cancel</button>
-                        <button matButton="filled" type="submit">Save</button>
-                    </p>
+        <p class="form-actions">
+            <button matButton="outlined" type="button" (click)="goBack()">Cancel</button>
+            <button matButton="filled" type="submit">Save</button>
+        </p>
 
-                </form>
-            </div>
-        </div>
-    </div>
-</div>
+    </form>
+</section>

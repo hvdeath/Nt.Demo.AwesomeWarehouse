@@ -1,6 +1,6 @@
-﻿namespace Nt.Demo.AwesomeWarehouse.WebApi.ApiService.Contracts.Products
+﻿namespace Nt.Demo.AwesomeWarehouse.WebApi.ApiService.Features.Product.GetProducts
 {
-    public class GetProductResponse
+    public class GetProductDto
     {
         public int Id { get; set; }
         public string Name { get; set; } = string.Empty;
@@ -11,7 +11,6 @@
         public int Quantity { get; set; }
         public DateTime Created { get; set; }
         public DateTime Modified { get; set; }
-        public string Version { get; set; }
-
+        public byte[] Version { get; set; }
     }
 }
