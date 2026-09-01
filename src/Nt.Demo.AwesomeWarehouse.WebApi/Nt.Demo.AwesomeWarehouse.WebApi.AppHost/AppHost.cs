@@ -1,3 +1,5 @@
+using System;
+
 var builder = DistributedApplication.CreateBuilder(args);
 
 
@@ -14,4 +16,13 @@ var apiService = builder.AddProject<Projects.Nt_Demo_AwesomeWarehouse_WebApi_Api
     .WithReference(db)
     .WaitFor(db);
 
-builder.Build().Run();
+// Add JavaScript app using Aspire's built-in integration. This will run the
+// provided npm script during local development and integrate the app with
+// the AppHost resource graph. Register an HTTP endpoint so the Aspire
+// dashboard shows a link to the running UI.
+var uiApp = builder.AddJavaScriptApp("ui", "../../Nt.Demo.AwesomeWarehouse.Ui", "start:local")
+    .WithReference(apiService)
+    .WithHttpEndpoint(port: 4200, env: "PORT");
+
+var app = builder.Build();
+app.Run();
