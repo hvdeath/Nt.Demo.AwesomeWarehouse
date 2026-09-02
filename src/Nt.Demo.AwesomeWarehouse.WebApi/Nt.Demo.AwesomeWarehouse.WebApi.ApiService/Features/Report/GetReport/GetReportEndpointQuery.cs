@@ -1,9 +1,14 @@
 ﻿using Nt.Demo.AwesomeWarehouse.WebApi.ApiService.Features.Report.Shared.Entities;
-using Nt.Demo.AwesomeWarehouse.WebApi.ApiService.Persistance;
+using Nt.Demo.AwesomeWarehouse.WebApi.ApiService.Shared.Persistance;
 
 namespace Nt.Demo.AwesomeWarehouse.WebApi.ApiService.Features.Report.GetReport
 {
-    public class GetReportQuery
+    public interface IGetReportQuery
+    {
+        Task<ReportValuesDto> ExecuteAsync(CancellationToken ct);
+    }
+
+    public class GetReportQuery : IGetReportQuery
     {
         private readonly WarehouseDbContext dbContext;
 

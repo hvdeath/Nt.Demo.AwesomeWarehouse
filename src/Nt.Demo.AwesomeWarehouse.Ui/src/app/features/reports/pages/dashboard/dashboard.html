@@ -1,42 +1,40 @@
 @if(report$ | async; as report) {
-  <section class="report-dashboard">
+<section class="report-dashboard">
     <mat-card appearance="outlined" class="dashboard-card">
-      <div class="dashboard-header">
-        <div>
-          <p class="eyebrow">Warehouse overview</p>
-          <h2>Inventory summary</h2>
-        </div>
-      </div>
-
-      <div class="summary-grid">
-        <div class="summary-item summary-item--primary">
-          <span class="stat-label">Total weight</span>
-          <strong>{{ report.totalWeight }}</strong>
-          <small>kg</small>
+        <div class="dashboard-header">
+            <div>
+                <p class="eyebrow">Warehouse overview</p>
+                <h2>Inventory summary</h2>
+            </div>
         </div>
 
-        <div class="summary-item summary-item--secondary">
-          <span class="stat-label">Total value</span>
-          <strong>{{ report.totalValue | currency:'HUF ':'symbol':'1.0-0' }}</strong>
-          <small>inventory estimate</small>
+        <div class="summary-grid">
+            <div class="summary-item summary-item--primary">
+                <span class="stat-label">Total weight</span>
+                <strong>{{ report.totalWeight | number:'1.0-0' }}</strong>
+                <small>kg</small>
+            </div>
+
+            <div class="summary-item summary-item--secondary">
+                <span class="stat-label">Total value</span>
+                <strong>{{ report.totalValue | currency:'HUF ':'symbol':'1.0-0' }}</strong>
+                <small>inventory estimate</small>
+            </div>
         </div>
-      </div>
 
-      <div class="product-links">
-        <a mat-stroked-button color="primary" class="product-link" [routerLink]="['/products/edit', report.mostItemsProductId]">
-          <mat-icon>inventory_2</mat-icon>
-          Most items product #{{ report.mostItemsProductId }}
-        </a>
+        <div class="product-links">
+            <a mat-stroked-button color="primary" class="product-link"
+                [routerLink]="['/products/edit', report.mostItemsProductId]">
+                <mat-icon>inventory_2</mat-icon>
+                Most items product #{{ report.mostItemsProductId }}
+            </a>
 
-        <a mat-stroked-button color="accent" class="product-link" [routerLink]="['/products/edit', report.largestWeightProductId]">
-          <mat-icon>scale</mat-icon>
-          Largest weight product #{{ report.largestWeightProductId }}
-        </a>
-      </div>
+            <a mat-stroked-button color="accent" class="product-link"
+                [routerLink]="['/products/edit', report.largestWeightProductId]">
+                <mat-icon>scale</mat-icon>
+                Largest weight product #{{ report.largestWeightProductId }}
+            </a>
+        </div>
     </mat-card>
-  </section>
-} @else{
-  <div class="spinner-container">
-    <mat-spinner></mat-spinner>
-  </div>
+</section>
 }

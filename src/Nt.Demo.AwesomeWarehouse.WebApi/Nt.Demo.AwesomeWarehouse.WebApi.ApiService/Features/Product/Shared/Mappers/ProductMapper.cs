@@ -17,7 +17,8 @@ namespace Nt.Demo.AwesomeWarehouse.WebApi.ApiService.Features.Products.Shared.Ma
                 Description = e.Description,
                 Weight = e.Weight,
                 Quantity = e.Quantity,
-                Created = e.Created
+                Created = e.Created,
+                Modified = e.Modified
             };
         }
         public override ProductEntity ToEntity(CreateProductRequest r)
@@ -46,6 +47,7 @@ namespace Nt.Demo.AwesomeWarehouse.WebApi.ApiService.Features.Products.Shared.Ma
                 Weight = e.Weight,
                 Quantity = e.Quantity,
                 Created = e.Created,
+                Modified = e.Modified,
                 Version = Convert.ToBase64String(e.Version)
             };
         }
@@ -76,6 +78,7 @@ namespace Nt.Demo.AwesomeWarehouse.WebApi.ApiService.Features.Products.Shared.Ma
                 Weight = e.Weight,
                 Created = e.Created,
                 Quantity = e.Quantity,
+                Modified = e.Modified,                
                 Version = Convert.ToBase64String(e.Version)
             };
         }
@@ -95,6 +98,7 @@ namespace Nt.Demo.AwesomeWarehouse.WebApi.ApiService.Features.Products.Shared.Ma
                 Weight = e.Weight,
                 Created = e.Created,
                 Quantity = e.Quantity,
+                Modified = e.Modified,
                 Version = Convert.ToBase64String(e.Version)
             };
         }

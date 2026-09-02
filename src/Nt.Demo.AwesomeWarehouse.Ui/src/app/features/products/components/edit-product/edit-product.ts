@@ -1,4 +1,4 @@
-import { Component, DestroyRef, inject, input, OnInit } from '@angular/core';
+import { Component, DestroyRef, inject, input, OnInit, signal } from '@angular/core';
 import { FormGroup, FormControl, Validators, ReactiveFormsModule } from '@angular/forms';
 import { MatButton } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -8,6 +8,7 @@ import { ProductService } from '../../services/product.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Product } from '../../model/product';
+import { LoaderService } from '../../../../core/services/loader.service';
 
 @Component({
   imports: [MatFormFieldModule, MatInputModule, ReactiveFormsModule, MatButton],
@@ -33,15 +34,15 @@ export class EditProductComponent implements OnInit {
       validators: [Validators.required, Validators.min(0)],
     }),
   });
-
   productId = input<number>();
 
+  loaderService = inject(LoaderService);
   router = inject(Router);
   productService = inject(ProductService);
   private snackBar = inject(MatSnackBar);
   private destroyRef = inject(DestroyRef);
 
-  storedProduct? : Product = undefined;
+  storedProduct?: Product = undefined;
 
   ngOnInit() {
     if (this.productId()) {
@@ -69,8 +70,8 @@ export class EditProductComponent implements OnInit {
   }
 
   onSubmit() {
-    console.log(this.productForm);
     if (this.productForm.valid) {
+      this.loaderService.show();
       const value = this.productForm.value;
 
       if (this.productId()) {
@@ -81,7 +82,7 @@ export class EditProductComponent implements OnInit {
             unitPrice: value.unitPrice!,
             weight: value.weight!,
             quantity: value.quantity!,
-            version: this.storedProduct?.version!
+            version: this.storedProduct?.version!,
           })
           .pipe(takeUntilDestroyed(this.destroyRef))
           .subscribe({
@@ -89,7 +90,10 @@ export class EditProductComponent implements OnInit {
               this.snackBar.open('Updated successfully!');
               this.goBack();
             },
-            error: () => this.snackBar.open('Saving failed!'),
+            error: () => {
+              this.snackBar.open('Saving failed!');
+              this.loaderService.hide();
+            },
           });
       } else {
         this.productService
@@ -98,7 +102,7 @@ export class EditProductComponent implements OnInit {
             description: value.description!,
             unitPrice: value.unitPrice!,
             weight: value.weight!,
-            quantity: value.quantity!
+            quantity: value.quantity!,
           })
           .pipe(takeUntilDestroyed(this.destroyRef))
           .subscribe({
@@ -106,7 +110,10 @@ export class EditProductComponent implements OnInit {
               this.snackBar.open('Created successfully!');
               this.goBack();
             },
-            error: () => this.snackBar.open('Saving failed!'),
+            error: () => {
+              this.snackBar.open('Saving failed!');
+              this.loaderService.hide();
+            },
           });
       }
     }

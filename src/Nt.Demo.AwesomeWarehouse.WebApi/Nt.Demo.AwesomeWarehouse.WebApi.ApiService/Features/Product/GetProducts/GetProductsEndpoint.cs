@@ -2,19 +2,17 @@
 using Nt.Demo.AwesomeWarehouse.WebApi.ApiService.Contracts.Products;
 using Nt.Demo.AwesomeWarehouse.WebApi.ApiService.Features.Product.Shared.Services;
 using Nt.Demo.AwesomeWarehouse.WebApi.ApiService.Features.Products.Shared.Mappers;
-using Nt.Demo.AwesomeWarehouse.WebApi.ApiService.Persistance;
+using Nt.Demo.AwesomeWarehouse.WebApi.ApiService.Shared.Persistance;
 
 namespace Nt.Demo.AwesomeWarehouse.WebApi.ApiService.Features.Products.GetProducts
 {
     public class GetProductsEndpoint : Endpoint<FindProductsQueryRequest, FindProductsResponse, GetProductsMapper>
     {
-        private readonly WarehouseDbContext dbContext;
-        private readonly ICurrencyExchangeService currencyExchangeService;
+        private readonly IGetProductsQuery getProductsQuery;
 
-        public GetProductsEndpoint(WarehouseDbContext dbContext, ICurrencyExchangeService currencyExchangeService)
+        public GetProductsEndpoint(IGetProductsQuery getProductsQuery)
         {
-            this.dbContext = dbContext;
-            this.currencyExchangeService = currencyExchangeService;
+            this.getProductsQuery = getProductsQuery;
         }
         public override void Configure()
         {
@@ -24,10 +22,9 @@ namespace Nt.Demo.AwesomeWarehouse.WebApi.ApiService.Features.Products.GetProduc
 
         public override async Task HandleAsync(FindProductsQueryRequest req, CancellationToken ct)
         {
-            var query = new GetProductsQuery(dbContext, currencyExchangeService);
-            var entities = await query.ExecuteAsync(req.Filter, req.PageNumber, req.PageSize, ct);
-            var count = await query.GetTotalCountAsync(req.Filter, ct);
-            var result = entities.Select(e => Map.FromEntity(e));
+            var entities = await getProductsQuery.ExecuteAsync(req.Filter, req.PageNumber, req.PageSize, ct);
+            var count = await getProductsQuery.GetTotalCountAsync(req.Filter, ct);
+            var result = entities.Select(Map.FromEntity);
 
             var response = new FindProductsResponse
             {

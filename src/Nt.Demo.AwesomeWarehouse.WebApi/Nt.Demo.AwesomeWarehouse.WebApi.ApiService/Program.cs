@@ -2,7 +2,12 @@ using FastEndpoints;
 using FastEndpoints.Swagger;
 using Microsoft.EntityFrameworkCore;
 using Nt.Demo.AwesomeWarehouse.WebApi.ApiService.Features.Product.Shared.Services;
-using Nt.Demo.AwesomeWarehouse.WebApi.ApiService.Persistance;
+using Nt.Demo.AwesomeWarehouse.WebApi.ApiService.Features.Products.CreateProduct;
+using Nt.Demo.AwesomeWarehouse.WebApi.ApiService.Features.Products.DeleteProduct;
+using Nt.Demo.AwesomeWarehouse.WebApi.ApiService.Features.Products.GetProducts;
+using Nt.Demo.AwesomeWarehouse.WebApi.ApiService.Features.Products.UpdateProduct;
+using Nt.Demo.AwesomeWarehouse.WebApi.ApiService.Features.Report.GetReport;
+using Nt.Demo.AwesomeWarehouse.WebApi.ApiService.Shared.Persistance;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -42,6 +47,14 @@ builder.Services.AddHttpClient<ICurrencyExchangeService, CurrencyExchangeService
 //.AddPolicyHandler(GetCircuitBreakerPolicy())
 ;
 
+// todo: use some more advanced mediator library like MediatR or Brighter to decouple the operations and queries from the endpoints, and to handle cross-cutting concerns like logging, metrics,etc...
+builder.Services.AddTransient<ICreateProductOperation, CreateProductOperation>();
+builder.Services.AddTransient<IDeleteProductOperation, DeleteProductOperation>();
+builder.Services.AddTransient<IGetProductByIdQuery, GetProductByIdQuery>();
+builder.Services.AddTransient<IGetProductsQuery, GetProductsQuery>();
+builder.Services.AddTransient<IUpdateProductOperation, UpdateProductOperation>();
+builder.Services.AddTransient<IGetReportQuery, GetReportQuery>();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -71,8 +84,3 @@ using (var scope = app.Services.CreateScope())
 app.MapDefaultEndpoints();
 
 app.Run();
-
-record WeatherForecast(DateOnly Date, int TemperatureC, string? Summary)
-{
-    public int TemperatureF => 32 + (int)(TemperatureC / 0.5556);
-}

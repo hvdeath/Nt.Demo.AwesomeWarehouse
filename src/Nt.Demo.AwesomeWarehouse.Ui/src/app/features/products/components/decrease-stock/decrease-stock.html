@@ -5,7 +5,7 @@
     <mat-label>Decrease by</mat-label>
     <input matInput type="number" min="0" [max]="data.quantity" [(ngModel)]="increasedValue" #input="ngModel" />
     @if(input.invalid){
-         <mat-error>Value can't decreased more than {{data.quantity}}</mat-error>
+    <mat-error>Value can't decreased more than {{data.quantity}}</mat-error>
     }
   </mat-form-field>
 </mat-dialog-content>

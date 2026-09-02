@@ -1,9 +1,14 @@
 ﻿using Nt.Demo.AwesomeWarehouse.WebApi.ApiService.Features.Products.Shared.Entities;
-using Nt.Demo.AwesomeWarehouse.WebApi.ApiService.Persistance;
+using Nt.Demo.AwesomeWarehouse.WebApi.ApiService.Shared.Persistance;
 
 namespace Nt.Demo.AwesomeWarehouse.WebApi.ApiService.Features.Products.CreateProduct
 {
-    public class CreateProductOperation
+    public interface ICreateProductOperation
+    {
+        Task<ProductEntity> ExecuteAsync(ProductEntity entity, CancellationToken ct);
+    }
+
+    public class CreateProductOperation : ICreateProductOperation
     {
         private readonly WarehouseDbContext dbContext;
 
@@ -15,11 +20,12 @@ namespace Nt.Demo.AwesomeWarehouse.WebApi.ApiService.Features.Products.CreatePro
         public async Task<ProductEntity> ExecuteAsync(ProductEntity entity, CancellationToken ct)
         {
             entity.Created = entity.Modified = DateTime.UtcNow;
-            
+
             dbContext.Products.Add(entity);
             await dbContext.SaveChangesAsync(ct);
 
             return entity;
         }
     }
+
 }

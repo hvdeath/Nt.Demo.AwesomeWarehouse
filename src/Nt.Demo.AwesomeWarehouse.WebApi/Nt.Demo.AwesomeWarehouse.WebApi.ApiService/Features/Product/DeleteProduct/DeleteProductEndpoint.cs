@@ -1,15 +1,15 @@
 using FastEndpoints;
-using Nt.Demo.AwesomeWarehouse.WebApi.ApiService.Persistance;
+using Nt.Demo.AwesomeWarehouse.WebApi.ApiService.Shared.Persistance;
 
 namespace Nt.Demo.AwesomeWarehouse.WebApi.ApiService.Features.Products.DeleteProduct
 {
     public class DeleteProductEndpoint : EndpointWithoutRequest<object>
     {
-        private readonly WarehouseDbContext dbContext;
+        private readonly IDeleteProductOperation deleteProductOperation;
 
-        public DeleteProductEndpoint(WarehouseDbContext dbContext)
+        public DeleteProductEndpoint(IDeleteProductOperation deleteProductOperation)
         {
-            this.dbContext = dbContext;
+            this.deleteProductOperation = deleteProductOperation;
         }
 
         public override void Configure()
@@ -20,9 +20,8 @@ namespace Nt.Demo.AwesomeWarehouse.WebApi.ApiService.Features.Products.DeletePro
 
         public override async Task HandleAsync(CancellationToken ct)
         {
-            var operation = new DeleteProductOperation(dbContext);
             int productId = Route<int>("id");
-            var deleted = await operation.ExecuteAsync(productId, ct);
+            var deleted = await deleteProductOperation.ExecuteAsync(productId, ct);
 
             if (!deleted)
             {

@@ -20,7 +20,7 @@ var apiService = builder.AddProject<Projects.Nt_Demo_AwesomeWarehouse_WebApi_Api
 // provided npm script during local development and integrate the app with
 // the AppHost resource graph. Register an HTTP endpoint so the Aspire
 // dashboard shows a link to the running UI.
-var uiApp = builder.AddJavaScriptApp("ui", "../../Nt.Demo.AwesomeWarehouse.Ui", "start:local")
+var webfrontend = builder.AddJavaScriptApp("webfrontend", "../../Nt.Demo.AwesomeWarehouse.Ui", "start:local")
     .WithReference(apiService)
     .WithHttpEndpoint(port: 4200, env: "PORT");
 

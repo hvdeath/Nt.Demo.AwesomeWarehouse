@@ -1,17 +1,16 @@
 ﻿using FastEndpoints;
 using Nt.Demo.AwesomeWarehouse.WebApi.ApiService.Contracts.Products;
 using Nt.Demo.AwesomeWarehouse.WebApi.ApiService.Features.Products.Shared.Mappers;
-using Nt.Demo.AwesomeWarehouse.WebApi.ApiService.Persistance;
 
 namespace Nt.Demo.AwesomeWarehouse.WebApi.ApiService.Features.Products.CreateProduct
 {
     public class CreateProductEndpoint : Endpoint<CreateProductRequest, CreateProductResponse, CreateProductMapper>
     {
-        private readonly WarehouseDbContext dbContext;
+        private readonly ICreateProductOperation createProductOperation;
 
-        public CreateProductEndpoint(WarehouseDbContext dbContext)
+        public CreateProductEndpoint(ICreateProductOperation createProductOperation)
         {
-            this.dbContext = dbContext;
+            this.createProductOperation = createProductOperation;
         }
         public override void Configure()
         {
@@ -21,8 +20,7 @@ namespace Nt.Demo.AwesomeWarehouse.WebApi.ApiService.Features.Products.CreatePro
 
         public override async Task HandleAsync(CreateProductRequest req, CancellationToken ct)
         {
-            var operation = new CreateProductOperation(dbContext);
-            var entity = await operation.ExecuteAsync(Map.ToEntity(req), ct);
+            var entity = await createProductOperation.ExecuteAsync(Map.ToEntity(req), ct);
             await Send.OkAsync(Map.FromEntity(entity));
         }
     }

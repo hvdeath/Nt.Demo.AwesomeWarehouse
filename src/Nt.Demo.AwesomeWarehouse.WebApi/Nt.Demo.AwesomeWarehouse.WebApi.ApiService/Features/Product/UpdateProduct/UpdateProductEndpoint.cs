@@ -2,7 +2,7 @@ using FastEndpoints;
 using Nt.Demo.AwesomeWarehouse.WebApi.ApiService.Contracts.Products;
 using Nt.Demo.AwesomeWarehouse.WebApi.ApiService.Features.Product.Shared.Excetions;
 using Nt.Demo.AwesomeWarehouse.WebApi.ApiService.Features.Products.Shared.Mappers;
-using Nt.Demo.AwesomeWarehouse.WebApi.ApiService.Persistance;
+using Nt.Demo.AwesomeWarehouse.WebApi.ApiService.Shared.Persistance;
 
 namespace Nt.Demo.AwesomeWarehouse.WebApi.ApiService.Features.Products.UpdateProduct
 {

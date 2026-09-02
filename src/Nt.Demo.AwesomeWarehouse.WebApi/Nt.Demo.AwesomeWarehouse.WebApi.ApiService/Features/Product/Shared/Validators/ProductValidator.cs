@@ -9,8 +9,7 @@ namespace Nt.Demo.AwesomeWarehouse.WebApi.ApiService.Features.Product.Shared.Val
         public CreateProductRequestValidator()
         {
             RuleFor(x => x.Name)
-                .NotEmpty()
-                .MinimumLength(5);
+                .NotEmpty();
 
             RuleFor(x => x.UnitPrice)
                 .GreaterThanOrEqualTo(0);

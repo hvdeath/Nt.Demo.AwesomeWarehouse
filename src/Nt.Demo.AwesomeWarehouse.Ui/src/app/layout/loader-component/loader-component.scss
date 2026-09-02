@@ -1,0 +1,17 @@
+
+.spinner-overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 3;
+  background: rgba(247, 250, 245, 0.28);
+  backdrop-filter: blur(1px);
+  border-radius: 12px;
+  pointer-events: none;
+}
+
+.spinner-overlay mat-spinner {
+  filter: drop-shadow(0 10px 20px rgba(84, 103, 55, 0.18));
+}

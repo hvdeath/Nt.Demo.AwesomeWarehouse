@@ -2,11 +2,17 @@
 using Nt.Demo.AwesomeWarehouse.WebApi.ApiService.Features.Product.GetProducts;
 using Nt.Demo.AwesomeWarehouse.WebApi.ApiService.Features.Product.Shared.Services;
 using Nt.Demo.AwesomeWarehouse.WebApi.ApiService.Features.Products.Shared.Entities;
-using Nt.Demo.AwesomeWarehouse.WebApi.ApiService.Persistance;
+using Nt.Demo.AwesomeWarehouse.WebApi.ApiService.Shared.Persistance;
 
 namespace Nt.Demo.AwesomeWarehouse.WebApi.ApiService.Features.Products.GetProducts
 {
-    public class GetProductsQuery
+    public interface IGetProductsQuery
+    {
+        Task<List<GetProductDto>> ExecuteAsync(string? filter, int pageNumber, int pageSize, CancellationToken ct);
+        Task<int> GetTotalCountAsync(string? filter, CancellationToken ct);
+    }
+
+    public class GetProductsQuery : IGetProductsQuery
     {
         private readonly WarehouseDbContext dbContext;
         private readonly ICurrencyExchangeService currencyExchangeService;
@@ -30,7 +36,7 @@ namespace Nt.Demo.AwesomeWarehouse.WebApi.ApiService.Features.Products.GetProduc
 
             var exchangeRate = await currencyExchangeService.GetExhangeRateAsync("EUR", "HUF", ct);
 
-            if(exchangeRate == 0)
+            if (exchangeRate == 0)
             {
                 throw new InvalidOperationException("Exchange rate cannot be zero.");
             }

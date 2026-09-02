@@ -42,8 +42,7 @@
 
         <p class="form-actions">
             <button matButton="outlined" type="button" (click)="goBack()">Cancel</button>
-            <button matButton="filled" type="submit">Save</button>
+            <button matButton="filled" type="submit" [disabled]="loaderService.loader()">Save</button>
         </p>
-
     </form>
 </section>

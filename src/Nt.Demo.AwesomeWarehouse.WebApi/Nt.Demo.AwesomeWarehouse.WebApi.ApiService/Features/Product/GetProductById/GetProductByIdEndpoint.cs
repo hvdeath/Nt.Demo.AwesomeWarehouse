@@ -1,17 +1,17 @@
 ﻿using FastEndpoints;
 using Nt.Demo.AwesomeWarehouse.WebApi.ApiService.Contracts.Products;
 using Nt.Demo.AwesomeWarehouse.WebApi.ApiService.Features.Products.Shared.Mappers;
-using Nt.Demo.AwesomeWarehouse.WebApi.ApiService.Persistance;
+using Nt.Demo.AwesomeWarehouse.WebApi.ApiService.Shared.Persistance;
 
 namespace Nt.Demo.AwesomeWarehouse.WebApi.ApiService.Features.Products.GetProducts
 {
     public class GetProductByIdEndpoint : EndpointWithoutRequest<GetProductResponse, GetProductMapper>
     {
-        private readonly WarehouseDbContext dbContext;
+        private readonly IGetProductByIdQuery getProductByIdQuery;
 
-        public GetProductByIdEndpoint(WarehouseDbContext dbContext)
+        public GetProductByIdEndpoint(IGetProductByIdQuery getProductByIdQuery)
         {
-            this.dbContext = dbContext;
+            this.getProductByIdQuery = getProductByIdQuery;
         }
         public override void Configure()
         {
@@ -21,9 +21,8 @@ namespace Nt.Demo.AwesomeWarehouse.WebApi.ApiService.Features.Products.GetProduc
 
         public override async Task HandleAsync(CancellationToken ct)
         {
-            var query = new GetProductByIdQuery(dbContext);
             int productId = Route<int>("id");
-            var entity = await query.ExecuteAsync(productId, ct);
+            var entity = await getProductByIdQuery.ExecuteAsync(productId, ct);
 
             if (entity == null)
             {

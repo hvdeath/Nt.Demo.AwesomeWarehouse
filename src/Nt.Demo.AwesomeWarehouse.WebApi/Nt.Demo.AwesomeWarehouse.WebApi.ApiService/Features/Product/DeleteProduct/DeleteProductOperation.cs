@@ -1,9 +1,14 @@
 using Microsoft.EntityFrameworkCore;
-using Nt.Demo.AwesomeWarehouse.WebApi.ApiService.Persistance;
+using Nt.Demo.AwesomeWarehouse.WebApi.ApiService.Shared.Persistance;
 
 namespace Nt.Demo.AwesomeWarehouse.WebApi.ApiService.Features.Products.DeleteProduct
 {
-    public class DeleteProductOperation
+    public interface IDeleteProductOperation
+    {
+        Task<bool> ExecuteAsync(int id, CancellationToken ct);
+    }
+
+    public class DeleteProductOperation : IDeleteProductOperation
     {
         private readonly WarehouseDbContext dbContext;
 

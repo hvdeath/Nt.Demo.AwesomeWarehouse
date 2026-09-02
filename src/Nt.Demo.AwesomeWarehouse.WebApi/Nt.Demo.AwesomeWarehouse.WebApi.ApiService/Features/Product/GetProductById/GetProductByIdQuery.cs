@@ -1,10 +1,15 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Nt.Demo.AwesomeWarehouse.WebApi.ApiService.Features.Products.Shared.Entities;
-using Nt.Demo.AwesomeWarehouse.WebApi.ApiService.Persistance;
+using Nt.Demo.AwesomeWarehouse.WebApi.ApiService.Shared.Persistance;
 
 namespace Nt.Demo.AwesomeWarehouse.WebApi.ApiService.Features.Products.GetProducts
 {
-    public class GetProductByIdQuery
+    public interface IGetProductByIdQuery
+    {
+        Task<ProductEntity?> ExecuteAsync(int id, CancellationToken ct);
+    }
+
+    public class GetProductByIdQuery : IGetProductByIdQuery
     {
         private readonly WarehouseDbContext dbContext;
 

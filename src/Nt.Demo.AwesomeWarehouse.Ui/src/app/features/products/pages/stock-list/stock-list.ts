@@ -1,6 +1,6 @@
 import { Component, DestroyRef, ElementRef, inject, OnInit, ViewChild } from '@angular/core';
 import { ProductService } from '../../services/product.service';
-import { AsyncPipe, CurrencyPipe, SlicePipe } from '@angular/common';
+import { AsyncPipe, CurrencyPipe, DatePipe, DecimalPipe, SlicePipe } from '@angular/common';
 import { Router, RouterLink, RouterOutlet } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
@@ -8,16 +8,16 @@ import { MatDialog } from '@angular/material/dialog';
 import { IncreaseStock } from '../../components/increase-stock/increase-stock';
 import { DecreaseStock } from '../../components/decrease-stock/decrease-stock';
 import { MatTableModule } from '@angular/material/table';
-import { MatIcon, MatIconModule } from '@angular/material/icon';
+import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { Product } from '../../model/product';
 import { ProductsDataSource } from './stock-list.datasource';
-import { MatProgressSpinner } from '@angular/material/progress-spinner';
 import { MatPaginator } from '@angular/material/paginator';
 import { debounceTime, distinctUntilChanged, fromEvent, tap } from 'rxjs';
 import { MatInputModule } from '@angular/material/input';
+import { LoaderService } from '../../../../core/services/loader.service';
 
 @Component({
   imports: [
@@ -31,9 +31,10 @@ import { MatInputModule } from '@angular/material/input';
     MatIconModule,
     MatTooltipModule,
     SlicePipe,
-    MatProgressSpinner,
     MatPaginator,
     MatInputModule,
+    DecimalPipe,
+    DatePipe,
   ],
   selector: 'app-stock-list',
   styleUrl: './stock-list.scss',
@@ -45,17 +46,26 @@ export class StockListComponent implements OnInit {
   private destroyRef = inject(DestroyRef);
   router = inject(Router);
   readonly dialog = inject(MatDialog);
-
+  loaderService = inject(LoaderService);
   products$ = this.productService.getAllProducts();
 
-  public dataSource: ProductsDataSource = new ProductsDataSource(this.productService);
-  columnsToDisplay = ['name', 'description', 'weight', 'unitPrice', 'unitPriceInEuros', 'quantity', 'actions'];
+  public dataSource!: ProductsDataSource;
+  columnsToDisplay = [
+    'name',
+    'description',
+    'weight',
+    'unitPrice',
+    'unitPriceInEuros',
+    'quantity',
+    'modified',
+    'actions',
+  ];
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild('input') input!: ElementRef;
 
   ngOnInit(): void {
-    this.dataSource = new ProductsDataSource(this.productService);
+    this.dataSource = new ProductsDataSource(this.productService, this.loaderService);
     this.dataSource.loadProducts();
   }
 
@@ -90,7 +100,7 @@ export class StockListComponent implements OnInit {
         .subscribe({
           next: () => {
             this.snackBar.open('Saved successfully!');
-            this.reloadCurrentRoute();
+            this.loadProductPage();
           },
           error: () => this.snackBar.open('Saving failed!'),
         });
@@ -121,7 +131,7 @@ export class StockListComponent implements OnInit {
             .subscribe({
               next: () => {
                 this.snackBar.open('Increased successfully!');
-                this.reloadCurrentRoute();
+                this.loadProductPage();
               },
               error: () => this.snackBar.open('Saving failed!'),
             });
@@ -153,18 +163,11 @@ export class StockListComponent implements OnInit {
             .subscribe({
               next: () => {
                 this.snackBar.open('Increased successfully!');
-                this.reloadCurrentRoute();
+                this.loadProductPage();
               },
               error: () => this.snackBar.open('Saving failed!'),
             });
         }
       });
-  }
-
-  reloadCurrentRoute() {
-    const currentUrl = this.router.url;
-    this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
-      this.router.navigate([currentUrl]);
-    });
   }
 }

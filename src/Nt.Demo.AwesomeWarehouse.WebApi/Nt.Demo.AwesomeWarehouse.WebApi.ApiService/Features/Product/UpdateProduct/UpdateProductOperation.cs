@@ -1,11 +1,16 @@
 using Microsoft.EntityFrameworkCore;
 using Nt.Demo.AwesomeWarehouse.WebApi.ApiService.Features.Product.Shared.Excetions;
 using Nt.Demo.AwesomeWarehouse.WebApi.ApiService.Features.Products.Shared.Entities;
-using Nt.Demo.AwesomeWarehouse.WebApi.ApiService.Persistance;
+using Nt.Demo.AwesomeWarehouse.WebApi.ApiService.Shared.Persistance;
 
 namespace Nt.Demo.AwesomeWarehouse.WebApi.ApiService.Features.Products.UpdateProduct
 {
-    public class UpdateProductOperation
+    public interface IUpdateProductOperation
+    {
+        Task<ProductEntity?> ExecuteAsync(ProductEntity entity, CancellationToken ct);
+    }
+
+    public class UpdateProductOperation : IUpdateProductOperation
     {
         private readonly WarehouseDbContext dbContext;
 

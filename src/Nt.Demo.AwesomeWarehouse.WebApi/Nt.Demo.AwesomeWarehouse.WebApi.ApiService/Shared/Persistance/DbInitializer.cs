@@ -1,6 +1,6 @@
 ﻿using Nt.Demo.AwesomeWarehouse.WebApi.ApiService.Features.Products.Shared.Entities;
 
-namespace Nt.Demo.AwesomeWarehouse.WebApi.ApiService.Persistance
+namespace Nt.Demo.AwesomeWarehouse.WebApi.ApiService.Shared.Persistance
 {
     public static class DbInitializer
     {
