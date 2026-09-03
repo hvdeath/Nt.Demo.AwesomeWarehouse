@@ -8,13 +8,8 @@ export class ProductService {
   private http = inject(HttpClient);
   private baseUrl = '/api/products/';
 
-  // GET product by ID
   getProduct(id: number): Observable<Product> {
     return this.http.get<Product>(`${this.baseUrl}${id}`);
-  }
-
-  getAllProducts(): Observable<Product[]> {
-    return this.http.get<Product[]>(this.baseUrl);
   }
 
   findProducts(filter: string, pageNumber: number, pageSize: number): Observable<FindProductsResponse> {
@@ -26,22 +21,14 @@ export class ProductService {
         });
   }
 
-  // POST create new product
   createProduct(product: CreateProductRequest): Observable<Product> {
-    return this.http.post<Product>(this.baseUrl, {
-      name: product.name,
-      description: product.description,
-      unitPrice: product.unitPrice,
-      weight: product.weight,
-    });
+    return this.http.post<Product>(this.baseUrl, product);
   }
 
-  // PUT update existing product
   updateProduct(id: number, product: UpdateProductRequest): Observable<Product> {
     return this.http.put<Product>(`${this.baseUrl}${id}`, product);
   }
 
-  // DELETE product by ID
   deleteProduct(id: number): Observable<void> {
     return this.http.delete<void>(`${this.baseUrl}${id}`);
   }

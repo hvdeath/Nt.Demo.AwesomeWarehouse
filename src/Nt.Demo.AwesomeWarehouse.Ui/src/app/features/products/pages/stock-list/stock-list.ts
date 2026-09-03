@@ -47,8 +47,6 @@ export class StockListComponent implements OnInit {
 
   productStore = inject(ProductStore);
 
-  products$ = this.productService.getAllProducts();
-
   columnsToDisplay = [
     'name',
     'description',
