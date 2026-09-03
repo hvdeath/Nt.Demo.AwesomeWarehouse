@@ -66,7 +66,7 @@ jobs:
         uses: actions/cache@v4
         with:
           path: ${{ env.UI_PATH }}/node_modules
-          key: node-modules-${{ runner.os }}-${{ hashFiles(env.UI_PATH + '/package-lock.json') }}
+          key: node-modules-${{ runner.os }}-${{ hashFiles(format('{0}/package-lock.json', env.UI_PATH)) }}
           restore-keys: |
             node-modules-${{ runner.os }}-
 
