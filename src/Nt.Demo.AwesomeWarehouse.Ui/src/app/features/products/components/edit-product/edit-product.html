@@ -41,8 +41,8 @@
         </mat-form-field>
 
         <p class="form-actions">
-            <button matButton="outlined" type="button" (click)="goBack()">Cancel</button>
-            <button matButton="filled" type="submit" [disabled]="loaderService.loader()">Save</button>
+            <button matButton="outlined" type="button" (click)="cancel()">Cancel</button>
+            <button matButton="filled" type="submit" [disabled]="globalStore.isLoading()">Save</button>
         </p>
     </form>
 </section>

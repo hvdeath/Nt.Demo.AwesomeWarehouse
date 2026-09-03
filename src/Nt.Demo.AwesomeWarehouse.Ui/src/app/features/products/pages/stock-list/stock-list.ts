@@ -1,8 +1,7 @@
 import { Component, DestroyRef, ElementRef, inject, OnInit, ViewChild } from '@angular/core';
 import { ProductService } from '../../services/product.service';
-import { AsyncPipe, CurrencyPipe, DatePipe, DecimalPipe, SlicePipe } from '@angular/common';
+import { CurrencyPipe, DatePipe, DecimalPipe, SlicePipe } from '@angular/common';
 import { Router, RouterLink, RouterOutlet } from '@angular/router';
-import { MatSnackBar } from '@angular/material/snack-bar';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { MatDialog } from '@angular/material/dialog';
 import { IncreaseStock } from '../../components/increase-stock/increase-stock';
@@ -13,15 +12,13 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { Product } from '../../model/product';
-import { ProductsDataSource } from './stock-list.datasource';
 import { MatPaginator } from '@angular/material/paginator';
 import { debounceTime, distinctUntilChanged, fromEvent, tap } from 'rxjs';
 import { MatInputModule } from '@angular/material/input';
-import { LoaderService } from '../../../../core/services/loader.service';
+import { ProductStore } from '../../store/product.store';
 
 @Component({
   imports: [
-    AsyncPipe,
     RouterLink,
     RouterOutlet,
     MatTableModule,
@@ -41,15 +38,17 @@ import { LoaderService } from '../../../../core/services/loader.service';
   templateUrl: './stock-list.html',
 })
 export class StockListComponent implements OnInit {
+  readonly DEFAULT_PAGE_SIZE = 10;
+
   productService = inject(ProductService);
-  private snackBar = inject(MatSnackBar);
   private destroyRef = inject(DestroyRef);
   router = inject(Router);
   readonly dialog = inject(MatDialog);
-  loaderService = inject(LoaderService);
+
+  productStore = inject(ProductStore);
+
   products$ = this.productService.getAllProducts();
 
-  public dataSource!: ProductsDataSource;
   columnsToDisplay = [
     'name',
     'description',
@@ -65,8 +64,7 @@ export class StockListComponent implements OnInit {
   @ViewChild('input') input!: ElementRef;
 
   ngOnInit(): void {
-    this.dataSource = new ProductsDataSource(this.productService, this.loaderService);
-    this.dataSource.loadProducts();
+    this.productStore.findProducts({ filter: '', pageIndex: 0, pageSize: this.DEFAULT_PAGE_SIZE });
   }
 
   ngAfterViewInit() {
@@ -85,62 +83,37 @@ export class StockListComponent implements OnInit {
   }
 
   loadProductPage() {
-    this.dataSource.loadProducts(
-      this.input.nativeElement.value,
-      this.paginator.pageIndex,
-      this.paginator.pageSize,
-    );
+    this.productStore.findProducts({
+      filter: this.input.nativeElement.value,
+      pageIndex: this.paginator.pageIndex,
+      pageSize: this.paginator.pageSize,
+    });
   }
 
   onDelete(product: Product) {
     if (confirm(`Are you sure to delete '${product.name}'?`)) {
-      this.productService
-        .deleteProduct(product.id)
-        .pipe(takeUntilDestroyed(this.destroyRef))
-        .subscribe({
-          next: () => {
-            this.snackBar.open('Saved successfully!');
-            this.loadProductPage();
-          },
-          error: () => this.snackBar.open('Saving failed!'),
-        });
+      this.productStore.deleteProduct(product.id);
     }
   }
 
   onDecrease(product: Product) {
-    const dialogRef = this.dialog.open(DecreaseStock, {
-      data: product,
-    });
-
-    dialogRef
-      .afterClosed()
-      .pipe(takeUntilDestroyed(this.destroyRef))
-      .subscribe((result) => {
-        console.log('The dialog was closed');
-        if (result !== undefined) {
-          this.productService
-            .updateProduct(product.id, {
-              name: product.name,
-              description: product.description,
-              unitPrice: product.unitPrice,
-              weight: product.weight,
-              quantity: product.quantity - +result,
-              version: product.version,
-            })
-            .pipe(takeUntilDestroyed(this.destroyRef))
-            .subscribe({
-              next: () => {
-                this.snackBar.open('Increased successfully!');
-                this.loadProductPage();
-              },
-              error: () => this.snackBar.open('Saving failed!'),
-            });
-        }
-      });
+    this.adjustStockDialog(product, DecreaseStock, (result: number) =>
+      this.productStore.decreaseStock({ id: product.id, amount: result }),
+    );
   }
 
   onIncrease(product: Product) {
-    const dialogRef = this.dialog.open(IncreaseStock, {
+    this.adjustStockDialog(product, IncreaseStock, (result: number) =>
+      this.productStore.increaseStock({ id: product.id, amount: result }),
+    );
+  }
+
+  private adjustStockDialog(
+    product: Product,
+    component: any,
+    stockAdjustmentFn: (result: number) => void,
+  ) {
+    const dialogRef = this.dialog.open(component, {
       data: product,
     });
 
@@ -150,23 +123,7 @@ export class StockListComponent implements OnInit {
       .subscribe((result) => {
         console.log('The dialog was closed');
         if (result !== undefined) {
-          this.productService
-            .updateProduct(product.id, {
-              name: product.name,
-              description: product.description,
-              unitPrice: product.unitPrice,
-              weight: product.weight,
-              quantity: product.quantity + +result,
-              version: product.version,
-            })
-            .pipe(takeUntilDestroyed(this.destroyRef))
-            .subscribe({
-              next: () => {
-                this.snackBar.open('Increased successfully!');
-                this.loadProductPage();
-              },
-              error: () => this.snackBar.open('Saving failed!'),
-            });
+          stockAdjustmentFn(+result);
         }
       });
   }

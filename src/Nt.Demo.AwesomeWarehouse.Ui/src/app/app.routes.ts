@@ -1,9 +1,7 @@
 import { Routes } from '@angular/router';
 import { ShellComponent } from './layout/shell-component/shell-component';
 import { HomeComponent } from './features/global/pages/home/home';
-import { StockListComponent } from './features/products/pages/stock-list/stock-list';
 import { DashboardComponent } from './features/reports/pages/dashboard/dashboard';
-import { EditProductComponent } from './features/products/components/edit-product/edit-product';
 import { productRoutes } from './features/products/product.routes';
 
 export const routes: Routes = [
@@ -19,6 +17,7 @@ export const routes: Routes = [
       {
         path: 'products',
         title: 'Stocks',
+        //loadChildren: () => import('./features/products/product.routes').then((m) => m.productRoutes),
         children: productRoutes,
       },
       {

@@ -1,14 +1,13 @@
-import { Component, DestroyRef, inject, input, OnInit, signal } from '@angular/core';
+import { Component, effect, inject, input, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators, ReactiveFormsModule } from '@angular/forms';
 import { MatButton } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { Router } from '@angular/router';
 import { ProductService } from '../../services/product.service';
-import { MatSnackBar } from '@angular/material/snack-bar';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Product } from '../../model/product';
-import { LoaderService } from '../../../../core/services/loader.service';
+import { ProductStore } from '../../store/product.store';
+import { GlobalStore } from '../../../../core/store/global.store';
 
 @Component({
   imports: [MatFormFieldModule, MatInputModule, ReactiveFormsModule, MatButton],
@@ -36,85 +35,67 @@ export class EditProductComponent implements OnInit {
   });
   productId = input<number>();
 
-  loaderService = inject(LoaderService);
   router = inject(Router);
   productService = inject(ProductService);
-  private snackBar = inject(MatSnackBar);
-  private destroyRef = inject(DestroyRef);
+  private productStore = inject(ProductStore);
+  globalStore = inject(GlobalStore);
 
   storedProduct?: Product = undefined;
 
+  constructor() {
+    effect(() => {
+      const product = this.productStore.selectedProduct();
+
+      if (product) {
+        this.storedProduct = product;
+        this.productForm.setValue({
+          name: product.name,
+          description: product.description,
+          weight: product.weight,
+          unitPrice: product.unitPrice,
+          quantity: product.quantity,
+        });
+      }
+    });
+  }
+
   ngOnInit() {
     if (this.productId()) {
-      this.productService
-        .getProduct(this.productId()!)
-        .pipe(takeUntilDestroyed(this.destroyRef))
-        .subscribe({
-          next: (product) => {
-            this.storedProduct = product;
-            this.productForm.setValue({
-              name: product.name,
-              description: product.description,
-              weight: product.weight,
-              unitPrice: product.unitPrice,
-              quantity: product.quantity,
-            });
-          },
-          error: () => this.snackBar.open('Saving failed!'),
-        });
+      this.productStore.getProduct(this.productId()!);
     }
   }
 
-  goBack() {
+  cancel() {
+    this.productStore.clearSelectedProduct();
     this.router.navigate(['/products']);
   }
 
   onSubmit() {
     if (this.productForm.valid) {
-      this.loaderService.show();
       const value = this.productForm.value;
 
       if (this.productId()) {
-        this.productService
-          .updateProduct(this.productId()!, {
+        this.productStore.updateProduct({
+          id: this.productId()!,
+          product: {
             name: value.name!,
             description: value.description!,
             unitPrice: value.unitPrice!,
             weight: value.weight!,
             quantity: value.quantity!,
             version: this.storedProduct?.version!,
-          })
-          .pipe(takeUntilDestroyed(this.destroyRef))
-          .subscribe({
-            next: () => {
-              this.snackBar.open('Updated successfully!');
-              this.goBack();
-            },
-            error: () => {
-              this.snackBar.open('Saving failed!');
-              this.loaderService.hide();
-            },
-          });
+          },
+        });
       } else {
-        this.productService
-          .createProduct({
+        this.productStore.createProduct({
+          product: {
             name: value.name!,
             description: value.description!,
             unitPrice: value.unitPrice!,
             weight: value.weight!,
             quantity: value.quantity!,
-          })
-          .pipe(takeUntilDestroyed(this.destroyRef))
-          .subscribe({
-            next: () => {
-              this.snackBar.open('Created successfully!');
-              this.goBack();
-            },
-            error: () => {
-              this.snackBar.open('Saving failed!');
-              this.loaderService.hide();
-            },
-          });
+          },
+        });
       }
     }
   }

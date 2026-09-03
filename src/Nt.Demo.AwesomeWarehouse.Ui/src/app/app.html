@@ -1,5 +1,5 @@
 <router-outlet></router-outlet>
 
-@if (isLoading()) {
+@if (this.loadingStore.isLoading()) {
   <app-loader />
 }

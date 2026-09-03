@@ -6,8 +6,8 @@ import {
   RouterOutlet,
 } from '@angular/router';
 import { LoaderComponent } from './layout/loader-component/loader-component';
-import { LoaderService } from './core/services/loader.service';
 import { PageTitleService } from './core/services/page-title.service';
+import { GlobalStore } from './core/store/global.store';
 
 @Component({
   selector: 'app-root',
@@ -18,17 +18,13 @@ import { PageTitleService } from './core/services/page-title.service';
 export class App {
   protected readonly title = signal('Nt.Demo.AwesomeWarehouse.Ui');
 
-  loadingService = inject(LoaderService);
+  loadingStore = inject(GlobalStore);
   router = inject(Router);
   pageTitleService = inject(PageTitleService);
 
-  isLoading = this.loadingService.loader;
+
   constructor() {
     this.router.events.subscribe((event) => this.navigationInterceptor(event));
-  }
-
-  get loader() {
-    return this.loadingService.loader;
   }
 
   private navigationInterceptor(event: RouterEvent): void {

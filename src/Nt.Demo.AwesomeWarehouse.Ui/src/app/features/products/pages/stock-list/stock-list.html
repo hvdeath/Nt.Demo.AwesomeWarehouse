@@ -14,7 +14,7 @@
     </div>
 
     <div class="table-shell">
-        <table mat-table [dataSource]="dataSource">
+        <table mat-table [dataSource]="this.productStore.products()">
             <mat-text-column name="name"></mat-text-column>
             <ng-container matColumnDef="description">
                 <th mat-header-cell *matHeaderCellDef>Description</th>
@@ -33,7 +33,7 @@
                 <th mat-header-cell *matHeaderCellDef>Weight (kg)</th>
                 <td mat-cell *matCellDef="let row"> {{row.weight | number:'1.0-2' }} </td>
             </ng-container>
-            <ng-container matColumnDef="quantity">
+             <ng-container matColumnDef="quantity">
                 <th mat-header-cell *matHeaderCellDef>Quantity</th>
                 <td mat-cell *matCellDef="let row"> {{row.quantity | number:'1.0-2' }} </td>
             </ng-container>
@@ -73,8 +73,8 @@
             <tr mat-row *matRowDef="let myRowData; columns: columnsToDisplay"></tr>
         </table>
     </div>
-    <mat-paginator [length]="dataSource.countSubject$ | async" [pageSize]="10"
-        [pageSizeOptions]="[10, 25, 50]"></mat-paginator>
+    <mat-paginator [length]="productStore.count()" [pageSize]="this.DEFAULT_PAGE_SIZE"
+        [pageSizeOptions]="[this.DEFAULT_PAGE_SIZE, 25, 50]"></mat-paginator>
     <router-outlet></router-outlet>
 
 </section>
