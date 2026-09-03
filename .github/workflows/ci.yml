@@ -1,0 +1,85 @@
+name: CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    env:
+      DOTNET_VERSION: '10.0.x'
+      NODE_VERSION: '18.x'
+      # Path to the frontend project relative to the repository root.
+      # Adjust this if your Angular app lives elsewhere.
+      UI_PATH: 'src/Nt.Demo.AwesomeWarehouse.Ui'
+      # Solution file to build/tests
+      SOLUTION: 'src/Nt.Demo.AwesomeWarehouse.WebApi/Nt.Demo.AwesomeWarehouse.WebApi.slnx'
+      # AppHost project to publish (optional)
+      APPHOST_PROJECT: 'src/Nt.Demo.AwesomeWarehouse.WebApi/Nt.Demo.AwesomeWarehouse.WebApi.AppHost/Nt.Demo.AwesomeWarehouse.WebApi.AppHost.csproj'
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: ${{ env.DOTNET_VERSION }}
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+
+      - name: Cache NuGet packages
+        uses: actions/cache@v4
+        with:
+          path: ~/.nuget/packages
+          key: nuget-${{ runner.os }}-$(echo "$(git rev-parse --short HEAD)")
+          restore-keys: |
+            nuget-${{ runner.os }}-
+
+      - name: Restore .NET
+        run: dotnet restore ${{ env.SOLUTION }}
+
+      - name: Build .NET
+        run: dotnet build ${{ env.SOLUTION }} --configuration Release --no-restore
+
+      - name: Run .NET tests
+        run: dotnet test ${{ env.SOLUTION }} --configuration Release --no-build --verbosity normal
+
+      - name: Publish AppHost (optional)
+        run: |
+          mkdir -p ${{ runner.temp }}/publish
+          dotnet publish ${{ env.APPHOST_PROJECT }} -c Release -o ${{ runner.temp }}/publish
+
+      - name: Upload .NET publish artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: dotnet-publish
+          path: ${{ runner.temp }}/publish
+
+      - name: Cache Node modules
+        uses: actions/cache@v4
+        with:
+          path: ${{ env.UI_PATH }}/node_modules
+          key: node-modules-${{ runner.os }}-${{ hashFiles(env.UI_PATH + '/package-lock.json') }}
+          restore-keys: |
+            node-modules-${{ runner.os }}-
+
+      - name: Install frontend dependencies
+        run: npm ci
+        working-directory: ${{ env.UI_PATH }}
+
+      - name: Build Angular frontend
+        run: npm run build --if-present
+        working-directory: ${{ env.UI_PATH }}
+
+      - name: Upload frontend artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: frontend-dist
+          path: ${{ env.UI_PATH }}/dist
