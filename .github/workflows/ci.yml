@@ -11,7 +11,7 @@ jobs:
     runs-on: ubuntu-latest
     env:
       DOTNET_VERSION: '10.0.x'
-      NODE_VERSION: '18.x'
+      NODE_VERSION: '24.x'
       # Path to the frontend project relative to the repository root.
       # Adjust this if your Angular app lives elsewhere.
       UI_PATH: 'src/Nt.Demo.AwesomeWarehouse.Ui'
